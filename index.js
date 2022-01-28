@@ -26,8 +26,6 @@ sockiTalki.use((socket, next) => {
   next(null, true);
 });
 
-
-
 //============================================= sockiTalki =============================================
 
 sockiTalki.on('connection', socket => {
@@ -37,11 +35,15 @@ sockiTalki.on('connection', socket => {
     console.log('SOCKI-TALKI DISCONNECTION FROM:', socket.id, '\nREASON:', reason);
   });
 
-  sockiTalki.on('join', room => socket.join(room));
+  socket.on('join', room => socket.join(room));
+  // console.log(`👽 ~ file: index.js ~ line 39 ~ room`, room);
 
-  socket.on('message', (messageText, room) => {
-    notALogger(messageText);
-    sockiTalki.emit('message', messageText);
+  socket.on('message', (payload) => {
+    let { roomName, message } = payload;
+    // console.log(`👽 ~ file: index.js ~ line 41 ~ socket.on ~ room`, payload.roomName);
+    // console.log(`👽 ~ file: index.js ~ line 41 ~ socket.on ~ room`, roomName);
+    notALogger(message);
+    sockiTalki.to(roomName).emit('message', message);
     sockiTalki.to(socket.id).emit('message-received');
 
     // if(!room) {
