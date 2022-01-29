@@ -49,11 +49,13 @@ sockiTalki.use((socket, next) => {
 
 //============================================= sockiTalki =============================================
 
+console.log('\n ================ SOCKI-TALKI ================ \n'); 
+
 sockiTalki.on('connection', socket => {
   console.log('SOCKI-TALKI CONNECTION FROM:', socket.id);
 
   socket.on('disconnect', (reason) => {
-    console.log('SOCKI-TALKI DISCONNECTION FROM:', socket.id, '\nREASON:', reason);
+    console.log('SOCKI-TALKI DISCONNECTION FROM:', socket.id, 'REASON:', reason);
   });
 
   socket.on('join', room => {
@@ -65,14 +67,9 @@ sockiTalki.on('connection', socket => {
   socket.on('message', (payload) => {
     let { roomName, message } = payload;
     notALogger(roomName, message);
+
     socket.to(roomName).emit('message', message);
     socket.to(socket.id).emit('message-received');
-
-    // if(!room) {
-    //   socket.broadcast.emit(`Everyone listen up, ${messageText}`);
-    // } else {
-    //   sockiTalki.to(room).emit('message', messageText);
-    // }
   });
 });
 
