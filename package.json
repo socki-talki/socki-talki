@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/daniel-jacks/socki-talki#readme",
   "dependencies": {
+    "colors": "^1.4.0",
     "jest": "^27.4.7",
     "socket.io": "^4.4.1",
     "socket.io-client": "^4.4.1",
