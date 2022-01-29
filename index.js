@@ -43,8 +43,8 @@ sockiTalki.on('connection', socket => {
     // console.log(`👽 ~ file: index.js ~ line 41 ~ socket.on ~ room`, payload.roomName);
     // console.log(`👽 ~ file: index.js ~ line 41 ~ socket.on ~ room`, roomName);
     notALogger(message);
-    sockiTalki.to(roomName).emit('message', message);
-    sockiTalki.to(socket.id).emit('message-received');
+    socket.to(roomName).emit('message', message);
+    socket.to(socket.id).emit('message-received');
 
     // if(!room) {
     //   socket.broadcast.emit(`Everyone listen up, ${messageText}`);

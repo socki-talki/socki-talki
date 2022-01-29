@@ -12,8 +12,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-let clientName;
-let roomName;
+let clientName, roomName; // these are assigned when the user inputs their info
 
 //  ======================== Socket Connection =======================
 
@@ -26,7 +25,6 @@ rl.question('What is your username ? ', (clientNameInput) => {
   });
 });
 
-
 function makeConnection() {
 
   //  ======================== Socket Connection =======================
@@ -38,24 +36,13 @@ function makeConnection() {
   //  ======================== Client Functions ========================
 
   socket.on('connect', () => {
+
     // we will put all subscribe and all publish functions below
 
-    console.log(`👽 ~ file: clients.js ~ line 44 ~ socket.on ~ roomName`, roomName);
     socket.emit('join', roomName);
-
-    rl.setPrompt(`Message to ${roomName}: `);
-
-    rl.prompt();
-    // rl.question(`Message to ${roomName}: `, (message) => {
-    //   socket.emit('message', { roomName, message });
-    // });
 
     socket.on('message', message => {
       console.log(message);
-    });
-
-    socket.on('message-received', () => {
-      rl.prompt();
     });
 
     rl.on('line', (message) => {
@@ -63,31 +50,9 @@ function makeConnection() {
         socket.close();
         process.exit();
       } else {
-        // console.log(`👽 ~ file: clients.js ~ line 69 ~ rl.question ~ roomName`, roomName);
-        socket.emit('message', { roomName, message });
+        socket.emit('message', { roomName, message: `${clientName}: ${message}` });
       }
     });
-    // socket.on('message', message => {
-    //   console.log(message);
-    // });
-
-    // socket.on('message-received', () => {
-    //   rl.question(`Anything else: `, (response) => {
-    //     socket.emit('message', response);
-    //   });
-    // });
-
-    // socket.on('message-received', () => {
-    //   rl.question(`Message to ${roomName}: `, (message) => {
-    //     if (message.toLowerCase().trim() === 'exit') {
-    //       socket.close();
-    //       process.exit();
-    //     } else {
-    //       // console.log(`👽 ~ file: clients.js ~ line 69 ~ rl.question ~ roomName`, roomName);
-    //       socket.emit('message', { roomName, message });
-    //     }
-    //   });
-    // });
   });
 }
 
