@@ -2,6 +2,8 @@
 
 const readline = require('readline');
 
+const { v4: uuidv4 } = require('uuid')
+
 const socketioClient = require('socket.io-client');
 
 const HOST = process.env.HOST || 'http://localhost:3000';
@@ -12,20 +14,19 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-let clientName;
-let roomName;
+let clientName, roomName; // these are assigned when the user inputs their info
 
 //  ======================== Socket Connection =======================
+console.log('\n ================ SOCKI-TALKI ================ \n'); 
 
-rl.question('What is your username ? ', (clientNameInput) => {
-  rl.question('What room would you like to join ? ', (roomNameInput) => {
-    clientName = clientNameInput;
-    roomName = roomNameInput;
-    // Call function to turn on server
+rl.question('What is your username? ', (clientNameInput) => {
+  rl.question('What room would you like to join? ', (roomNameInput) => {
+    clientName = `${clientNameInput}.${uuidv4()}`; // add uuid to client name to keep socket names from clashing
+    roomName = roomNameInput.toLowerCase().trim(); // lowercase and trim to ensure clients enter same room.
+    // Call function to connect to server
     makeConnection();
   });
 });
-
 
 function makeConnection() {
 
@@ -40,21 +41,33 @@ function makeConnection() {
   socket.on('connect', () => {
     // we will put all subscribe and all publish functions below
 
+    console.log(`\n ================ Room: ${roomName} ================ \n`); 
+
     socket.emit('join', roomName);
+    rl.prompt('>');
 
-    rl.question(`What would you like to say: `, (response) => {
-      socket.emit('message', response);
+    socket.on('message', payload => {
+      console.log(`${payload.clientName}: ${payload.message}`);
+      rl.prompt('>');
     });
 
-    socket.on('message', message => {
-      console.log(message);
+    // the line event is 'emit' when the user presses 'enter'
+
+    rl.on('line', (message) => {
+      if (message.toLowerCase().trim() === 'exit') {
+        socket.close();
+        process.exit();
+      } else {
+        socket.emit('message', {
+          roomName,
+          clientName,
+          message
+        });
+
+        rl.prompt('>');
+      }
     });
 
-    socket.on('message-received', () => {
-      rl.question(`Anything else? : `, (response) => {
-        socket.emit('message', response);
-      });
-    });
   });
 }
 
