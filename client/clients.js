@@ -2,7 +2,8 @@
 
 const readline = require('readline');
 
-const { v4: uuidv4 } = require('uuid')
+const { v4: uuidv4 } = require('uuid');
+const colors = require('colors');
 
 const socketioClient = require('socket.io-client');
 
@@ -14,13 +15,19 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
+colors.setTheme({
+  server: ['black', 'bgBrightCyan'],
+  questions: ['brightGreen'],
+  usernames: [assignColor(), 'bold'],
+});
+
 let clientName, roomName; // these are assigned when the user inputs their info
 
 //  ======================== Socket Connection =======================
-console.log('\n ================ SOCKI-TALKI ================ \n'); 
+console.log('\n ================ SOCKI-TALKI ================ \n'.server); 
 
-rl.question('What is your username? ', (clientNameInput) => {
-  rl.question('What room would you like to join? ', (roomNameInput) => {
+rl.question('What is your username? '.questions, (clientNameInput) => {
+  rl.question('What room would you like to join? '.questions, (roomNameInput) => {
     clientName = `${clientNameInput}.${uuidv4()}`; // add uuid to client name to keep socket names from clashing
     roomName = roomNameInput.toLowerCase().trim(); // lowercase and trim to ensure clients enter same room.
     // Call function to connect to server
@@ -41,14 +48,14 @@ function makeConnection() {
   socket.on('connect', () => {
     // we will put all subscribe and all publish functions below
 
-    console.log(`\n ================ Room: ${roomName} ================ \n`); 
-
+    console.log(`\n ================ ROOM: ${roomName} ================ \n`.server); 
+rl.setPrompt('> '.brightCyan);
     socket.emit('join', roomName);
-    rl.prompt('>');
+    rl.prompt();
 
     socket.on('message', payload => {
-      console.log(`${payload.clientName}: ${payload.message}`);
-      rl.prompt('>');
+      console.log(`${payload.clientName.split('.')[0]}`.usernames, ':', `${payload.message}`.brightWhite);
+      rl.prompt();
     });
 
     // the line event is 'emit' when the user presses 'enter'
@@ -61,14 +68,18 @@ function makeConnection() {
         socket.emit('message', {
           roomName,
           clientName,
-          message
+          message,
         });
 
-        rl.prompt('>');
+        rl.prompt();
       }
     });
-
   });
 }
 
+function assignColor() {
+  const assignedColor = ['brightRed', 'brightBlue', 'brightMagenta', 'magenta', 'cyan'];
+  let randomNum = Math.floor(Math.random() * (assignedColor.length));
+  return assignedColor[randomNum];
+}
 
