@@ -46,8 +46,8 @@ function makeConnection() {
     socket.emit('join', roomName);
     rl.prompt('>');
 
-    socket.on('message', message => {
-      console.log(message);
+    socket.on('message', payload => {
+      console.log(`${payload.clientName}: ${payload.message}`);
       rl.prompt('>');
     });
 
@@ -58,7 +58,12 @@ function makeConnection() {
         socket.close();
         process.exit();
       } else {
-        socket.emit('message', { roomName, message: `${clientName.split('.')[0]}: ${message}` });
+        socket.emit('message', {
+          roomName,
+          clientName,
+          message
+        });
+
         rl.prompt('>');
       }
     });

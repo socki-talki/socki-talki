@@ -65,10 +65,11 @@ sockiTalki.on('connection', socket => {
   });
 
   socket.on('message', (payload) => {
-    let { roomName, message } = payload;
-    notALogger(roomName, message);
 
-    socket.to(roomName).emit('message', message);
+    notALogger(payload.roomName, payload);
+    
+    socket.to(payload.roomName).emit('message', payload);
+
     socket.to(socket.id).emit('message-received');
   });
 });
