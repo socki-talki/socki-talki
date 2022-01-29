@@ -3,18 +3,39 @@
 const socketIo = require('socket.io');
 const PORT = process.env.PORT || 3000;
 const server = socketIo(PORT);
-const uuid = require('uuid').v4;
+// const uuid = require('uuid').v4;
 
 const sockiTalki = server.of('/socki-talki');
 
 //  ============================================= Queue  =============================================
 
 const messageQueue = {
-  prevMessages: {
-    room: '',
-    id: uuid(),
-    message: '',
+  prevMessages: {},
+
+  // this is called whenever a message is sent, and saves that message within the room
+  addMessage: function (nameOfRoom, message) {
+
+    let day = returnDay();
+
+    let arrayToAdd = this.prevMessages[day][nameOfRoom] ? this.prevMessages[day][nameOfRoom] : this.prevMessages[day][nameOfRoom] = [];
+
+    arrayToAdd.push(message);
+    console.log(this.prevMessages);
   },
+
+  // this is called whenever a new room is created by a user
+  addRoom: function (nameOfRoom) {
+    let day = returnDay();
+
+    if (!this.prevMessages[day]) {
+      this.prevMessages[day] = {};
+    }
+
+    if (!this.prevMessages[day][nameOfRoom]) {
+      this.prevMessages[day][nameOfRoom] = [];
+    }
+  },
+
 };
 
 //============================================= middleware =============================================
@@ -37,11 +58,16 @@ sockiTalki.on('connection', socket => {
     console.log('SOCKI-TALKI DISCONNECTION FROM:', socket.id, 'REASON:', reason);
   });
 
-  socket.on('join', room => socket.join(room));
+  socket.on('join', room => {
+    messageQueue.addRoom(room);
+    console.log(messageQueue.prevMessages);
+    socket.join(room);
+  });
 
   socket.on('message', (payload) => {
     let { roomName, message } = payload;
-    notALogger(message);
+    notALogger(roomName, message);
+
     socket.to(roomName).emit('message', message);
     socket.to(socket.id).emit('message-received');
   });
@@ -49,7 +75,32 @@ sockiTalki.on('connection', socket => {
 
 //  ============================================= Helper Functions  =====================================
 
-function notALogger(message) {
-  console.log(message);
-  messageQueue.addMessage;
+function notALogger(nameOfRoom, message) {
+  console.log(`Roomname: ${nameOfRoom}`, message);
+  messageQueue.addMessage(nameOfRoom, message);
 }
+
+function returnDay() {
+  const date = new Date();
+  let day = date.getDay();
+  return day;
+}
+
+function bringDownTheHammer() {
+  let day = returnDay();
+  let value = day - 2;
+
+  switch (day) {
+    case 0:
+      messageQueue.prevMessages['5'] = {};
+      break;
+    case 1:
+      messageQueue.prevMessages['6'] = {};
+      break;
+    default:
+      messageQueue.prevMessages[value] = {};
+      break;
+  }
+}
+
+setInterval(() => bringDownTheHammer(), 43200000);

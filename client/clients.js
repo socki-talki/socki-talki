@@ -1,7 +1,9 @@
 'use strict';
 
 const readline = require('readline');
+
 const { v4: uuidv4 } = require('uuid')
+
 const socketioClient = require('socket.io-client');
 
 const HOST = process.env.HOST || 'http://localhost:3000';
@@ -38,7 +40,9 @@ function makeConnection() {
 
   socket.on('connect', () => {
     // we will put all subscribe and all publish functions below
+
     console.log(`\n ================ Room: ${roomName} ================ \n`); 
+
     socket.emit('join', roomName);
     rl.prompt('>');
 
@@ -46,6 +50,8 @@ function makeConnection() {
       console.log(message);
       rl.prompt('>');
     });
+
+    // the line event is 'emit' when the user presses 'enter'
 
     rl.on('line', (message) => {
       if (message.toLowerCase().trim() === 'exit') {
@@ -56,6 +62,7 @@ function makeConnection() {
         rl.prompt('>');
       }
     });
+
   });
 }
 
