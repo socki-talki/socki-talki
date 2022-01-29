@@ -3,7 +3,9 @@
 const socketIo = require('socket.io');
 const PORT = process.env.PORT || 3000;
 const server = socketIo(PORT);
-// const uuid = require('uuid').v4;
+const uuid = require('uuid').v4;
+const colors = require('colors');
+
 
 const sockiTalki = server.of('/socki-talki');
 
@@ -76,6 +78,31 @@ sockiTalki.on('connection', socket => {
 
 //  ============================================= Helper Functions  =====================================
 
+
+function assignColor() {
+  const assignedColor = ['brightRed', 'brightGreen', 'brightYellow', 'brightBlue', 'brightMagenta', 'brightCyan', 'brightWhite'];
+  let randomNum = Math.floor(Math.random() * (assignedColor.length));
+  return assignedColor[randomNum];
+}
+
+function assignBackgropundColor() {
+  const assignedBackgroundColor = ['bgBrightRed', 'bgBrightGreen', 'bgBrightYellow', 'bgBrightBlue', 'bgBrightMagenta', 'bgBrightCyan', 'bgBrightWhite', 'bgRed', 'bgGreen', 'bgBlue', 'bgMagenta', 'bgCyan'];
+  let randomNum = Math.floor(Math.random() * (assignedBackgroundColor.length));
+  return assignedBackgroundColor[randomNum];
+}
+
+colors.setTheme({
+  server: ['black', 'bgBrightCyan'],
+  server2: ['black', 'bgBrightGreen'],
+  yours: [assignColor()],
+});
+
+console.log('Whats up?!? Check out my fuckin color scheme Bro!!!'.server);
+console.log('Whats up?!? Check out my fuckin color scheme Bro!!!'.server2);
+
+let otherUserColors = assignColor();
+console.log('Whats up?!? Check out your fuckin color scheme Bro!!!'[otherUserColors]);
+
 function notALogger(nameOfRoom, message) {
   console.log(`Roomname: ${nameOfRoom}`, message);
   messageQueue.addMessage(nameOfRoom, message);
@@ -105,3 +132,4 @@ function bringDownTheHammer() {
 }
 
 setInterval(() => bringDownTheHammer(), 43200000);
+
