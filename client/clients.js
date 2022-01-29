@@ -1,6 +1,7 @@
 'use strict';
 
 const readline = require('readline');
+const colors = require('colors');
 
 const socketioClient = require('socket.io-client');
 
@@ -12,8 +13,7 @@ const rl = readline.createInterface({
   output: process.stdout,
 });
 
-let clientName;
-let roomName;
+let clientName, roomName; // these are assigned when the user inputs their info
 
 //  ======================== Socket Connection =======================
 
@@ -21,11 +21,10 @@ rl.question('What is your username ? ', (clientNameInput) => {
   rl.question('What room would you like to join ? ', (roomNameInput) => {
     clientName = clientNameInput;
     roomName = roomNameInput;
-    // Call function to turn on server
+    // Call function to connect to server
     makeConnection();
   });
 });
-
 
 function makeConnection() {
 
@@ -38,23 +37,28 @@ function makeConnection() {
   //  ======================== Client Functions ========================
 
   socket.on('connect', () => {
+
     // we will put all subscribe and all publish functions below
+
+    rl.setPrompt('');
 
     socket.emit('join', roomName);
 
-    rl.question(`What would you like to say: `, (response) => {
-      socket.emit('message', response);
-    });
-
     socket.on('message', message => {
-      console.log(message);
+      console.log(colors.green(message));
     });
 
-    socket.on('message-received', () => {
-      rl.question(`Anything else? : `, (response) => {
-        socket.emit('message', response);
-      });
+    // the line event is 'emit' when the user presses 'enter'
+
+    rl.on('line', (message) => {
+      if (message.toLowerCase().trim() === 'exit') {
+        socket.close();
+        process.exit();
+      } else {
+        socket.emit('message', { roomName, message: `${clientName}: ${message}` });
+      }
     });
+
   });
 }
 
