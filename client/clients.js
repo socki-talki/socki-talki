@@ -1,6 +1,7 @@
 'use strict';
 
 const readline = require('readline');
+const colors = require('colors');
 
 const socketioClient = require('socket.io-client');
 
@@ -39,11 +40,15 @@ function makeConnection() {
 
     // we will put all subscribe and all publish functions below
 
+    rl.setPrompt('');
+
     socket.emit('join', roomName);
 
     socket.on('message', message => {
-      console.log(message);
+      console.log(colors.green(message));
     });
+
+    // the line event is 'emit' when the user presses 'enter'
 
     rl.on('line', (message) => {
       if (message.toLowerCase().trim() === 'exit') {
@@ -53,6 +58,7 @@ function makeConnection() {
         socket.emit('message', { roomName, message: `${clientName}: ${message}` });
       }
     });
+
   });
 }
 
