@@ -28,29 +28,22 @@ sockiTalki.use((socket, next) => {
 
 //============================================= sockiTalki =============================================
 
+console.log('\n ================ SOCKI-TALKI ================ \n'); 
+
 sockiTalki.on('connection', socket => {
   console.log('SOCKI-TALKI CONNECTION FROM:', socket.id);
 
   socket.on('disconnect', (reason) => {
-    console.log('SOCKI-TALKI DISCONNECTION FROM:', socket.id, '\nREASON:', reason);
+    console.log('SOCKI-TALKI DISCONNECTION FROM:', socket.id, 'REASON:', reason);
   });
 
   socket.on('join', room => socket.join(room));
-  // console.log(`👽 ~ file: index.js ~ line 39 ~ room`, room);
 
   socket.on('message', (payload) => {
     let { roomName, message } = payload;
-    // console.log(`👽 ~ file: index.js ~ line 41 ~ socket.on ~ room`, payload.roomName);
-    // console.log(`👽 ~ file: index.js ~ line 41 ~ socket.on ~ room`, roomName);
     notALogger(message);
     socket.to(roomName).emit('message', message);
     socket.to(socket.id).emit('message-received');
-
-    // if(!room) {
-    //   socket.broadcast.emit(`Everyone listen up, ${messageText}`);
-    // } else {
-    //   sockiTalki.to(room).emit('message', messageText);
-    // }
   });
 });
 
