@@ -4,8 +4,6 @@ const socketIo = require('socket.io');
 const PORT = process.env.PORT || 3000;
 const server = socketIo(PORT);
 const uuid = require('uuid').v4;
-const colors = require('colors');
-
 
 const sockiTalki = server.of('/socki-talki');
 
@@ -37,7 +35,6 @@ const messageQueue = {
       this.prevMessages[day][nameOfRoom] = [];
     }
   },
-
 };
 
 //============================================= middleware =============================================
@@ -68,7 +65,7 @@ sockiTalki.on('connection', socket => {
 
   socket.on('message', (payload) => {
 
-    notALogger(payload.roomName, payload);
+    notALogger(payload.roomName, payload.message, payload.clientName);
     
     socket.to(payload.roomName).emit('message', payload);
 
@@ -78,34 +75,10 @@ sockiTalki.on('connection', socket => {
 
 //  ============================================= Helper Functions  =====================================
 
-
-function assignColor() {
-  const assignedColor = ['brightRed', 'brightGreen', 'brightYellow', 'brightBlue', 'brightMagenta', 'brightCyan', 'brightWhite'];
-  let randomNum = Math.floor(Math.random() * (assignedColor.length));
-  return assignedColor[randomNum];
-}
-
-function assignBackgropundColor() {
-  const assignedBackgroundColor = ['bgBrightRed', 'bgBrightGreen', 'bgBrightYellow', 'bgBrightBlue', 'bgBrightMagenta', 'bgBrightCyan', 'bgBrightWhite', 'bgRed', 'bgGreen', 'bgBlue', 'bgMagenta', 'bgCyan'];
-  let randomNum = Math.floor(Math.random() * (assignedBackgroundColor.length));
-  return assignedBackgroundColor[randomNum];
-}
-
-colors.setTheme({
-  server: ['black', 'bgBrightCyan'],
-  server2: ['black', 'bgBrightGreen'],
-  yours: [assignColor()],
-});
-
-console.log('Whats up?!? Check out my fuckin color scheme Bro!!!'.server);
-console.log('Whats up?!? Check out my fuckin color scheme Bro!!!'.server2);
-
-let otherUserColors = assignColor();
-console.log('Whats up?!? Check out your fuckin color scheme Bro!!!'[otherUserColors]);
-
-function notALogger(nameOfRoom, message) {
-  console.log(`Roomname: ${nameOfRoom}`, message);
-  messageQueue.addMessage(nameOfRoom, message);
+function notALogger(nameOfRoom, message, clientName) {
+  console.log(`Roomname: ${nameOfRoom}`);
+  clientName = clientName.split('.')[0];
+  messageQueue.addMessage(nameOfRoom, `${ clientName }: ${ message }`);
 }
 
 function returnDay() {
