@@ -41,8 +41,8 @@ function makeConnection() {
 
     socket.emit('join', roomName);
 
-    socket.on('message', message => {
-      console.log(message);
+    socket.on('message', payload => {
+      console.log(`${payload.clientName}: ${payload.message}`);
     });
 
     rl.on('line', (message) => {
@@ -50,7 +50,11 @@ function makeConnection() {
         socket.close();
         process.exit();
       } else {
-        socket.emit('message', { roomName, message: `${clientName}: ${message}` });
+        socket.emit('message', {
+          roomName,
+          clientName,
+          message
+        });
       }
     });
   });

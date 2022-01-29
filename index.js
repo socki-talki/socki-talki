@@ -39,11 +39,10 @@ sockiTalki.on('connection', socket => {
   // console.log(`👽 ~ file: index.js ~ line 39 ~ room`, room);
 
   socket.on('message', (payload) => {
-    let { roomName, message } = payload;
     // console.log(`👽 ~ file: index.js ~ line 41 ~ socket.on ~ room`, payload.roomName);
     // console.log(`👽 ~ file: index.js ~ line 41 ~ socket.on ~ room`, roomName);
-    notALogger(message);
-    socket.to(roomName).emit('message', message);
+    notALogger(payload);
+    socket.to(payload.roomName).emit('message', payload);
     socket.to(socket.id).emit('message-received');
 
     // if(!room) {
