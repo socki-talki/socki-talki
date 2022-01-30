@@ -47,7 +47,7 @@ sockiTalki.use((socket, next) => {
 
 //============================================= sockiTalki =============================================
 
-console.log('\n ================ SOCKI-TALKI ================ \n'); 
+console.log('\n ================ SOCKI-TALKI ================ \n');
 
 sockiTalki.on('connection', socket => {
   console.log('SOCKI-TALKI CONNECTION FROM:', socket.id);
@@ -59,16 +59,17 @@ sockiTalki.on('connection', socket => {
   socket.on('join', room => {
     messageQueue.addRoom(room);
     console.log(messageQueue.prevMessages);
+    let curDay = returnDay();
+    socket.emit('previous', messageQueue.prevMessages[curDay][room]);
     socket.join(room);
   });
 
   socket.on('message', (payload) => {
 
     notALogger(payload.roomName, payload.message, payload.clientName);
-    
+
     socket.to(payload.roomName).emit('message', payload);
 
-    socket.to(socket.id).emit('message-received');
   });
 });
 
@@ -77,7 +78,7 @@ sockiTalki.on('connection', socket => {
 function notALogger(nameOfRoom, message, clientName) {
   console.log(`Roomname: ${nameOfRoom}`);
   clientName = clientName.split('.')[0];
-  messageQueue.addMessage(nameOfRoom, `${ clientName }: ${ message }`);
+  messageQueue.addMessage(nameOfRoom, `${clientName}: ${message}`);
 }
 
 function returnDay() {
