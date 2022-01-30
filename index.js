@@ -3,7 +3,6 @@
 const socketIo = require('socket.io');
 const PORT = process.env.PORT || 3000;
 const server = socketIo(PORT);
-const uuid = require('uuid').v4;
 
 const sockiTalki = server.of('/socki-talki');
 
