@@ -8,7 +8,7 @@ Deployment URL: https://socket-talki.herokuapp.com
 
 ## Installation
 
-to install run `git@github.com:socki-talki/socki-talki.git`
+to install run `git clone git@github.com:socki-talki/socki-talki.git`
 
 run `npm install`
 
@@ -29,19 +29,19 @@ https://socket-talki.herokuapp.com/socki-talki
 
 ## Features
 
+* Room:
+  * Select what room you want to start chatting, or just enter nothing to enter public chat.
+
+* Messages:
+  * Messages are passed through `socket.io` and instantly displayed on other users' terminals.
+  * Past two days of messages are saved to the server and displayed when entering a room so you're never left out of the conversation.
+
 * Style:
   * Used `colors.JS` to add the terminal coloring.
   * There are five easy to read color scheme that users will randomly receive upon logging in.
 
 * Username:
   * Ability to create your own username without worry of it already being taken.
-
-* Room:
-  * Select what room you want to start chatting in or just enter nothing to enter public chat.
-
-* Messages:
-  * Messages are passed through `socket.io` and instantly displayed on other users terminal.
-  * Past two days of messages are saved to the server and displayed when entering a room so you're never left out of the conversation.
 
 ## Created by:
 
