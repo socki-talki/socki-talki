@@ -66,13 +66,13 @@ function makeConnection() {
         messages.shift();
       }
       messages.forEach((message) => {
-        console.log(`${message}`);
+        console.log(`${message.split(':')[0]}:`.usernames + `${message.split(':')[1]}`);
         rl.prompt();
       });
     });
 
     socket.on('message', payload => {
-      console.log(`${payload.clientName.split('.')[0]}`.usernames, ':', `${payload.message}`.brightWhite);
+      console.log(`${payload.clientName.split('.')[0]}`.usernames + ':', `${payload.message}`.brightWhite);
       rl.prompt();
     });
 
