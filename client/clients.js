@@ -7,8 +7,13 @@ const colors = require('colors');
 
 const socketioClient = require('socket.io-client');
 
-const HOST = process.env.HOST || 'http://localhost:3000';
+// const HOST = process.env.HOST || 'http://localhost:3000';
+const HOST = 'https://socket-talki.herokuapp.com';
 const NAMESPACE = process.env.NAMESPACE || '/socki-talki';
+
+
+
+// herokusite.com/socki-talki
 
 const rl = readline.createInterface({
   input: process.stdin,
