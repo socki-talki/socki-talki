@@ -19,7 +19,6 @@ const messageQueue = {
     let arrayToAdd = this.prevMessages[day][nameOfRoom] ? this.prevMessages[day][nameOfRoom] : this.prevMessages[day][nameOfRoom] = [];
 
     arrayToAdd.push(message);
-    console.log(this.prevMessages);
   },
 
   // this is called whenever a new room is created by a user
@@ -106,3 +105,8 @@ function bringDownTheHammer() {
 
 setInterval(() => bringDownTheHammer(), 43200000);
 
+module.exports = {
+  messageQueue,
+  notALogger,
+  returnDay,
+};

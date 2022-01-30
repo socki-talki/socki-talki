@@ -101,3 +101,4 @@ function assignColor() {
   return assignedColor[randomNum];
 }
 
+module.exports = makeConnection;
