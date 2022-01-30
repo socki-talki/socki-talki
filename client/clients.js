@@ -1,3 +1,7 @@
+#!/usr/bin/env node
+
+// This shebang line feeds the interpreter this file after the "talki" keyword is called in terminal
+
 'use strict';
 
 const readline = require('readline');
@@ -11,9 +15,8 @@ const socketioClient = require('socket.io-client');
 const HOST = 'https://socket-talki.herokuapp.com';
 const NAMESPACE = process.env.NAMESPACE || '/socki-talki';
 
-
-
-// herokusite.com/socki-talki
+// Variable changes how many recent messages the client can see on inital login
+const viewableMessages = 20;
 
 const rl = readline.createInterface({
   input: process.stdin,
@@ -29,7 +32,7 @@ colors.setTheme({
 let clientName, roomName; // these are assigned when the user inputs their info
 
 //  ======================== Socket Connection =======================
-console.log('\n ================ SOCKI-TALKI ================ \n'.server); 
+console.log('\n ================ SOCKI-TALKI ================ \n'.server);
 
 rl.question('What is your username? '.questions, (clientNameInput) => {
   rl.question('What room would you like to join? '.questions, (roomNameInput) => {
@@ -53,10 +56,20 @@ function makeConnection() {
   socket.on('connect', () => {
     // we will put all subscribe and all publish functions below
 
-    console.log(`\n ================ ROOM: ${roomName} ================ \n`.server); 
-rl.setPrompt('> '.brightCyan);
+    console.log(`\n ================ ROOM: ${roomName} ================ \n`.server);
+    rl.setPrompt('> '.brightCyan);
     socket.emit('join', roomName);
     rl.prompt();
+
+    socket.on('previous', (messages) => {
+      while (messages.length > viewableMessages) {
+        messages.shift();
+      }
+      messages.forEach((message) => {
+        console.log(`${message}`);
+        rl.prompt();
+      });
+    });
 
     socket.on('message', payload => {
       console.log(`${payload.clientName.split('.')[0]}`.usernames, ':', `${payload.message}`.brightWhite);
@@ -88,3 +101,4 @@ function assignColor() {
   return assignedColor[randomNum];
 }
 
+module.exports = makeConnection;
