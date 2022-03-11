@@ -4,7 +4,7 @@ socki-talki deployed on Heroku.
 
 Deployment URL: https://socket-talki.herokuapp.com
 
-![Data Flow](/UML.jpg)
+<img src='./img/UML.jpg' style='width:60%'/>
 
 ## Installation
 
@@ -25,7 +25,7 @@ To test server run: `npm test`
 
 ## Routes
 
-https://socket-talki.herokuapp.com/socki-talki
+This application is using web-sockets, and there is no webpage related to this application. Instead, you could clone the repo and then go ahead and use 'npm install -g'. Then type 'talki' into the CLI and get chatting!
 
 ## Features
 
@@ -34,7 +34,7 @@ https://socket-talki.herokuapp.com/socki-talki
 
 * Messages:
   * Messages are passed through `socket.io` and instantly displayed on other users' terminals.
-  * Past two days of messages are saved to the server and displayed when entering a room so you're never left out of the conversation.
+  * Previous messages from the last day are saved to the server and displayed when entering a room so you're never left out of the conversation.
 
 * Style:
   * Used `colors.JS` to add the terminal coloring.
@@ -43,9 +43,24 @@ https://socket-talki.herokuapp.com/socki-talki
 * Username:
   * Ability to create your own username without worry of it already being taken.
 
+## Socki-Talki in Action!
+<div style='display:flex; justify-content: space-around'>
+  <p>Load previous messages upon joining room!</p>
+  <p>Let all your friends know so they can join in!</p>
+</div>
+
+<div style='display:flex; justify-content: space-around'>
+  <img src='./img/prevMsgs.jpg' style='width:40%'/>
+  <img src='./img/numerousUsers.jpg' style='width:40%'/>
+</div>
+
+<br />
+<hr />
+<br />
+
 ## Created by:
 
 - **Kellen Linse:** https://github.com/Kellen-Linse
-- **Keian Anthony:** https://github.com/Keian-A
 - **Daniel Jackson:** https://github.com/daniel-jacks
+- **Keian Anthony:** https://github.com/Keian-A
 - **Micheal Metcalf:** https://github.com/Metty82
