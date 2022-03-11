@@ -44,14 +44,16 @@ This application is using web-sockets, and there is no webpage related to this a
   * Ability to create your own username without worry of it already being taken.
 
 ## Socki-Talki in Action!
-<div style='display:flex; font-size: .8em; justify-content: space-around'>
-  <p>Load previous messages upon joining room!</p>
-  <p>Let all your friends know so they can join in!</p>
-</div>
 
-<div style='display:flex; justify-content: space-around'>
-  <img src='./img/prevMsgs.jpg' style='width:45%'/>
-  <img src='./img/numerousUsers.jpg' style='width:45%'/>
+<div style='display:flex; justify-content: space-between'>
+  <div style='width:45%'>
+    <p>Load previous messages upon joining room!</p>
+    <img src='./img/prevMsgs.jpg' />
+  </div>
+  <div style='width:45%'>
+    <p>Let all your friends know so they can join in!</p>
+    <img src='./img/numerousUsers.jpg' />
+  </div>
 </div>
 
 <br />
