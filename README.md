@@ -50,8 +50,8 @@ This application is using web-sockets, and there is no webpage related to this a
 </div>
 
 <div style='display:flex; justify-content: space-around'>
-  <img src='./img/prevMsgs.jpg' style='width:40%'/>
-  <img src='./img/numerousUsers.jpg' style='width:40%'/>
+  <img src='./img/prevMsgs.jpg' style='width:50%'/>
+  <img src='./img/numerousUsers.jpg' style='width:50%'/>
 </div>
 
 <br />
