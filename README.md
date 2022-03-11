@@ -48,11 +48,11 @@ This application is using web-sockets, and there is no webpage related to this a
 <div style='display:flex; justify-content: space-between'>
   <div style='width:45%'>
     <p>Load previous messages upon joining room!</p>
-    <img src='./img/prevMsgs.jpg' style='width:85%'/>
+    <img src='./img/prevMsgs.jpg' style='width:45%'/>
   </div>
   <div style='width:45%'>
     <p>Let all your friends know so they can join in!</p>
-    <img src='./img/numerousUsers.jpg' style='width:85%'/>
+    <img src='./img/numerousUsers.jpg' style='width:45%'/>
   </div>
 </div>
 
