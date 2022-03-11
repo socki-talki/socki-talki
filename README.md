@@ -4,7 +4,7 @@ socki-talki deployed on Heroku.
 
 Deployment URL: https://socket-talki.herokuapp.com
 
-<img src='./img/UML.jpg' style='width:60%'/>
+<img src='./img/UML.jpg' style='width:75%'/>
 
 ## Installation
 
